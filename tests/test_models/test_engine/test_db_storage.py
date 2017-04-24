@@ -17,20 +17,17 @@ class Test_DBStorage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """create a session"""
-        # close previous connexion to same database
-        storage._DBStorage__session.close()
-        cls.store = DBStorage()
         test_args = {'updated_at': datetime(2017, 2, 12, 00, 31, 53, 331997),
                      'id': "0234",
                      'created_at': datetime(2017, 2, 12, 00, 31, 53, 331900),
                      'name': 'wifi'}
         cls.model = Amenity(**test_args)
-        cls.store.reload()
+        storage.reload()
         cls.test_len = 0
 
     @classmethod
     def tearDownClass(cls):
-        cls.store._DBStorage__session.close()
+        storage._DBStorage__session.close()
         storage.reload()
 
     def test_all(self):
