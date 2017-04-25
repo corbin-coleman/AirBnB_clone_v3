@@ -19,4 +19,4 @@ def stats():
     objects['reviews'] = storage.count('Review')
     objects['states'] = storage.count('State')
     objects['users'] = storage.count('User')
-
+    return jsonify(objects)
