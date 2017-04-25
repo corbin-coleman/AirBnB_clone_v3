@@ -104,3 +104,23 @@ class FileStorage:
     def close(self):
         """Close a session"""
         self.reload()
+
+    def get(self, cls, id):
+        """Return object associated w/ given class and id"""
+        obj = None
+        get_class = FileStorage.__objects.get(id)
+        if get_class and get_class.__class__.__name__ == cls:
+            obj = get_class
+            print(obj)
+        return obj
+
+    def count(self, cls=None):
+        """Count the number of a given class"""
+        if cls is None:
+            return len(FileStorage.__objects)
+        else:
+            result = {}
+            for k, v in FileStorage.__objects.items():
+                if v.__class__.__name__ == cls:
+                    result[k] = v
+            return len(result)
