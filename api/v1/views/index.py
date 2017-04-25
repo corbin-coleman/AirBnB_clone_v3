@@ -10,7 +10,7 @@ from models import storage
 def status_ok():
     return jsonify({'status': "OK"})
 
-@app_views.route('/api/v1/stats')
+@app_views.route('/stats')
 def stats():
     objects = {}
     objects['amenities'] = storage.count('Amenity')
