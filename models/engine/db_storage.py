@@ -76,10 +76,35 @@ class DBStorage:
         be in the init method
         """
         Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(sessionmaker(bind=self.__engine))
+        self.__session = scoped_session(sessionmaker(bind=self.__engine), expire_on_commit=False)
 
     def close(self):
         """
         close a session
         """
         self.__session.remove()
+
+    def get(self, cls, id):
+        """
+        Get the specified object by class and id
+        """
+        orm_object = None
+        if cls:
+            orm_object = self.__session.query(self.__models_available[cls]).filter_by(id=id).first()
+        return orm_object
+
+    def count(self, cls=None):
+        """
+        Count the number of a given class in the database
+        """
+        orm_objects = {}
+        if cls:
+            for k in self.__session.query(self.__models_available[cls]):
+                orm_objects[k.__dict__['id']] = k
+        else:
+            for i in self.__models_available.values():
+                j = self.__session.query(i).all()
+                if j:
+                    for k in j:
+                        orm_objects[k.__dict__['id']] = k
+        return len(orm_objects)
