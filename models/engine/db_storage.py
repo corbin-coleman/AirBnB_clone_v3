@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+This is the db_storage module
+"""
 from models.base_model import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import (sessionmaker, scoped_session)
@@ -9,9 +12,6 @@ from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
-"""
-This is the db_storage module
-"""
 
 
 class DBStorage:
@@ -77,7 +77,8 @@ class DBStorage:
         be in the init method
         """
         Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(sessionmaker(bind=self.__engine), expire_on_commit=False)
+        self.__session = scoped_session(sessionmaker(bind=self.__engine,
+                                                     expire_on_commit=False))
 
     def close(self):
         """
@@ -89,10 +90,12 @@ class DBStorage:
         """
         Get the specified object by class and id
         """
-        orm_object = None
+        obj = None
         if cls:
-            orm_object = self.__session.query(self.__models_available[cls]).filter_by(id=id).first()
-        return orm_object
+            get_cls = self.__models_available.get(cls)
+            if get_cls:
+                obj = self.__session.query(get_cls).filter_by(id=id).first()
+        return obj
 
     def count(self, cls=None):
         """
