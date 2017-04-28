@@ -48,7 +48,10 @@ def create_state():
     """
     Create a new state
     """
-    new_state_dict = request.get_json()
+    try:
+        new_state_dict = request.get_json()
+    except:
+        new_state_dict = None
     if not new_state_dict:
         abort(400, 'Not a JSON')
     if new_state_dict.get('name'):
@@ -64,7 +67,12 @@ def update_state(state_id):
     """
     Update a state
     """
-    dict_update = request.get_json()
+    try:
+        dict_update = request.get_json()
+    except:
+        dict_update = None
+    if not dict_update:
+        abort(400, 'Not a JSON')
     state = storage.get('State', state_id)
     if state:
         for key in dict_update.keys():
