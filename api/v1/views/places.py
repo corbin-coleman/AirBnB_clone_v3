@@ -19,7 +19,7 @@ def get_places(city_id):
         city_places = []
         for place in all_places.values():
             if place.city_id == city_id:
-                city_places.append(place)
+                city_places.append(place.to_json())
         return jsonify(city_places)
     abort(404)
 
