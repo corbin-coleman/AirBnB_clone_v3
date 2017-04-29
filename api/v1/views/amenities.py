@@ -19,7 +19,8 @@ def get_amenities():
     return jsonify(json_amenities)
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['GET'], strict_slashes=False)
+@app_views.route('/amenities/<amenity_id>', methods=['GET'],
+                 strict_slashes=False)
 def get_amenity(amenity_id):
     """
     Get a specifc amenity object, by id
@@ -62,8 +63,9 @@ def create_amenity():
         abort(400, 'Missing name')
 
 
-@app_views.route('/amenities/<state_id>', methods=['PUT'], strict_slashes=False)
-def update_amenity(state_id):
+@app_views.route('/amenities/<amenity_id>', methods=['PUT'],
+                 strict_slashes=False)
+def update_amenity(amenity_id):
     """
     Update a amenity
     """
@@ -73,7 +75,7 @@ def update_amenity(state_id):
         dict_update = None
     if not dict_update:
         abort(400, 'Not a JSON')
-    amenity = storage.get('Amenity', state_id)
+    amenity = storage.get('Amenity', amenity_id)
     if amenity:
         for key in dict_update.keys():
             if key not in ['id', 'created_at', 'updated_at']:
