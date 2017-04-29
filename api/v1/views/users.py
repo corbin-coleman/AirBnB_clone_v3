@@ -14,8 +14,8 @@ def get_users():
     """
     users = storage.all('User')
     json_users = []
-    for user in states.values():
-        json_users.append(state.to_json())
+    for user in users.values():
+        json_users.append(user.to_json())
     return jsonify(json_users)
 
 
@@ -54,12 +54,15 @@ def create_user():
         new_user_dict = None
     if not new_user_dict:
         abort(400, 'Not a JSON')
-    if new_user_dict.get('name'):
-        new_user = User(new_user_dict)
-        new_user.save()
-        return (jsonify(new_user.to_json()), 201)
+    if new_user_dict.get('email'):
+        if new_user_dict.get('password'):
+            new_user = User(new_user_dict)
+            new_user.save()
+            return (jsonify(new_user.to_json()), 201)
+        else:
+            abort(400, 'Missing password')
     else:
-        abort(400, 'Missing name')
+        abort(400, 'Missing email')
 
 
 @app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
