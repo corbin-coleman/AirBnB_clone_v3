@@ -15,6 +15,10 @@ from models.state import State
 
 
 class DBStorage:
+    """
+    The storage system for HBnB
+    Uses MySQL databases
+    """
     __engine = None
     __session = None
     __Session = None
