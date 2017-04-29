@@ -16,7 +16,7 @@ def get_places(city_id):
     city = storage.get('City', city_id)
     if city:
         all_places = storage.all('Place')
-        city_places = [place.to_json() for place in all_places if place.city_id == city_id]
+        city_places = [place.to_json() for place in all_places.values() if place.city_id == city_id]
         return jsonify(city_places)
     abort(404)
 
@@ -59,7 +59,7 @@ def create_place(city_id):
         except:
             place_dict = None
         if place_dict is None:
-            abort(404, 'Not a JSON')
+            abort(400, 'Not a JSON')
         if place_dict.get('user_id') is None:
             abort(400, 'Missing user_id')
         if place_dict.get('name') is None:
@@ -73,7 +73,7 @@ def create_place(city_id):
     abort(404)
 
 
-@app_views.route('places/<place_id>', methods=['PUT'],
+@app_views.route('/places/<place_id>', methods=['PUT'],
                  strict_slashes=False)
 def update_place(place_id):
     """
