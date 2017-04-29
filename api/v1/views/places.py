@@ -16,7 +16,10 @@ def get_places(city_id):
     city = storage.get('City', city_id)
     if city:
         all_places = storage.all('Place')
-        city_places = [place.to_json() for place in all_places.values() if place.city_id == city_id]
+        city_places = []
+        for place in all_places.values():
+            if place.city_id == city_id:
+                city_places.append(place)
         return jsonify(city_places)
     abort(404)
 
