@@ -14,7 +14,6 @@ def get_cities(state_id):
     Grab cities from a specifc state
     """
     state = storage.get('State', state_id)
-    print(state)
     if state:
         all_cities = state.cities
         json_cities = []
